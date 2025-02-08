@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workout Graph</title>
+    <title>Graph - Health Tracker</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <div class="graph-container">
-        <h1 class="title">Workout Data Graph</h1>
-        <div class="graph">
-            {{ graph_html | safe }}
-        </div>
-        <br>
-        <a href="/" class="btn-link">Back to Home</a>
+    {% include 'base.html' %}
+    <div class="container">
+        <h1>Steps Over Time</h1>
+        <img src="data:image/png;base64,{{ plot_url }}" alt="Graph showing steps over time">
+        <a href="/dashboard" class="btn-link">Back to Dashboard</a>
     </div>
 </body>
 </html>
