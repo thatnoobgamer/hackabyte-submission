@@ -4,7 +4,7 @@ from flask import Flask, render_template, request
 import markdown
 import openai
 
-def airesponse(injury, severity):
+def airesponse(injury, severity):   
         f = open("apikey",'r')
         openai.api_key = f.read()
         aicontent = "help! theres a person who is currently/has a" + str(injury) + ". the severity of the injury is " + str(severity) + ".please tell me what to do in a numbered list. please include what to do until help arrives and what to do for any possible injury based on any information provided." 
@@ -35,7 +35,7 @@ def directions():
     injury = request.form['injury']
     severity = request.form['severity']
     response = airesponse(injury, severity)
-    return render_template('directions.html', response=response.choices[0].message.content)
+    return render_template('directions.html', response=markdown.markdown(response.choices[0].message.content))
 
 if __name__ == '__main__':
     app.run(debug=True)
