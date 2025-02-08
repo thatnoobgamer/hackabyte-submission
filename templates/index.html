@@ -1,41 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Health Tracker</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Google Translate Widget -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
+
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-container">
       <a href="/" class="navbar-brand">Health Tracker</a>
+      <div id="google_translate_element"></div>
     </div>
   </nav>
-  
+
   <!-- Main Content -->
   <div class="container">
-    <h1>Track Your Workout</h1>
+    <h1 class="title">Track Your Workout</h1>
     
-    <form action="/submit" method="POST">
-      <label for="workout-name">Workout Name:</label>
+    <form action="/submit" method="POST" class="form">
+      <label for="workout-name">Workout Name</label>
       <input type="text" id="workout-name" name="workout-name" placeholder="Enter workout name" required>
       
-      <label for="steps">Steps:</label>
+      <label for="steps">Steps</label>
       <input type="number" id="steps" name="steps" placeholder="Enter steps" required>
       
-      <label for="duration">Duration (minutes):</label>
+      <label for="duration">Duration (minutes)</label>
       <input type="number" id="duration" name="duration" placeholder="Enter duration" required>
       
-      <label for="calories">Calories Burned:</label>
+      <label for="calories">Calories Burned</label>
       <input type="number" id="calories" name="calories" placeholder="Enter calories burned" required>
       
-      <label for="heart-rate">Heart Rate:</label>
+      <label for="heart-rate">Heart Rate</label>
       <input type="number" id="heart-rate" name="heart-rate" placeholder="Enter heart rate" required>
       
-      <button type="submit">Submit Data</button>
+      <button type="submit" class="btn-submit">Submit</button>
     </form>
+    
+    <div class="links">
+      <a href="/graph" class="btn-link">View Graph</a>
+    </div>
   </div>
 
 </body>

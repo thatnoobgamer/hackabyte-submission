@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
+import plotly.express as px
+import plotly.io as pio
+import json
 
 app = Flask(__name__)
 
@@ -42,6 +45,27 @@ def submit():
     conn.close()
 
     return redirect(url_for('home'))
+
+# Graph route
+@app.route('/graph')
+def graph():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute('SELECT * FROM workouts')
+    data = c.fetchall()
+    conn.close()
+
+    # Prepare the data for graphing
+    workouts = [row[1] for row in data]  # workout_name
+    steps = [row[2] for row in data]
+    duration = [row[3] for row in data]
+    calories = [row[4] for row in data]
+
+    # Create a DataFrame using Plotly
+    fig = px.bar(x=workouts, y=steps, title="Steps per Workout")
+    graph_html = pio.to_html(fig, full_html=False)
+
+    return render_template('graph.html', graph_html=graph_html)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,13 +1,35 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+/* General Reset */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
+/* Body and Basic Layout */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fc;
+  color: #333;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+}
+
+h1.title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Navbar Styling */
 .navbar {
-  background-color: #333;
-  padding: 10px 20px;
+  background-color: #4e73df;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .navbar-container {
@@ -17,49 +39,109 @@ body {
 }
 
 .navbar-brand {
-  color: white;
   font-size: 24px;
+  font-weight: bold;
+  color: white;
   text-decoration: none;
 }
 
-.container {
-  width: 300px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+#google_translate_element {
+  margin-left: auto;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
+/* Main Content Styling */
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
 }
 
 label {
+  font-size: 14px;
   margin-bottom: 5px;
-  display: block;
+  color: #4e73df;
 }
 
 input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #4e73df;
 }
 
 button {
-  width: 100%;
-  padding: 10px;
-  background-color: #4CAF50;
+  padding: 12px;
+  background-color: #4e73df;
   color: white;
   border: none;
-  border-radius: 4px;
-  margin-top: 10px;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #2e59d9;
+}
+
+/* Button Links */
+.btn-link {
+  text-align: center;
+  display: block;
+  margin-top: 15px;
+  font-size: 16px;
+  color: #4e73df;
+  text-decoration: none;
+  padding: 10px 0;
+  transition: color 0.3s;
+}
+
+.btn-link:hover {
+  color: #2e59d9;
+}
+
+/* Graph Page Styling */
+.graph-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.graph {
+  padding: 20px;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container, .graph-container {
+    width: 90%;
+    padding: 20px;
+  }
+  
+  h1.title {
+    font-size: 24px;
+  }
+  
+  .navbar-brand {
+    font-size: 18px;
+  }
 }
