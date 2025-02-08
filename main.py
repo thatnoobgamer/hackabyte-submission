@@ -125,7 +125,6 @@ def weather():
     weather_url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}"
 
     response = requests.get(weather_url).json()
-    print(response)
 
     temperature = response['main']['temp'] - 273.15  # Convert from Kelvin to Celsius
     weather_desc = response['weather'][0]['description']

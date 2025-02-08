@@ -10,6 +10,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/graphs">Graphs</a>
+        <a href="/progress">Progress Report</a>
+        <a href="/weather">Weather</a>
+    </nav>
     <script>
         function getWeather() {
     // Check if geolocation is available in the browser
@@ -48,7 +54,7 @@
 window.onload = getWeather;
     </script>
     <h1>Weather Information</h1>
-    <div id="weather" class="weather-container" style="text-align: center;">
+    <div id="weather" class="weather-container" style="margin:0 auto;">
         <!-- Weather data will be inserted here by JavaScript -->
     </div>
 </body>

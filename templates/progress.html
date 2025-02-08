@@ -10,8 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/graphs">Graphs</a>
+        <a href="/progress">Progress Report</a>
+        <a href="/weather">Weather</a>
+    </nav>
     <h1>Progress Report</h1>
-    <p>Steps in the last 7 days: {{ weekly_steps }}</p>
-    <p>Steps in the last 30 days: {{ monthly_steps }}</p>
+    <p style="text-align: center;">Steps in the last 7 days: {{ weekly_steps }}</p>
+    <p style="text-align: center;">Steps in the last 30 days: {{ monthly_steps }}</p>
 </body>
 </html>
