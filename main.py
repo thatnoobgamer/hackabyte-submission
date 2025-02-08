@@ -1,150 +1,135 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-import random
-import csv
-import io, base64, matplotlib.pyplot as plt
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+import json
+import os
+import datetime
+import matplotlib.pyplot as plt
+import io
+import base64
 import requests
 
-# Initialize Flask App
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'
-login_manager = LoginManager()
-login_manager.init_app(app)
 
-# In-memory storage for demo purposes
-users = {'test': {'password': 'password123'}}  # Replace with real database
-workouts = []  # List to store workout data
+# JSON File to Store Data
+DATA_FILE = 'workouts.json'
 
-# Fitness tips for motivation
-fitness_tips = [
-    "Stay hydrated!",
-    "Consistency is key!",
-    "Push yourself to the limit!"
-]
+# Load existing data or create an empty list
+def load_data():
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, 'r') as file:
+            return json.load(file)
+    return []
 
-# User Model
-class User(UserMixin):
-    def __init__(self, id, username):
-        self.id = id
-        self.username = username
+# Save data to JSON file
+def save_data(data):
+    with open(DATA_FILE, 'w') as file:
+        json.dump(data, file, indent=4)
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User(user_id, 'test')
+# Home Route (Workout Input Form)
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    workouts = load_data()
 
-# Routes
-@app.route('/')
-def index():
-    tip = random.choice(fitness_tips)  # Display a random fitness tip
-    return render_template('index.html', tip=tip)
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        if username in users and users[username]['password'] == password:
-            user = User(username, username)
-            login_user(user)
-            return redirect(url_for('dashboard'))
-    return render_template('login.html')
+        workout = {
+            "date": str(datetime.date.today()),
+            "workout_name": request.form.get('workout_name'),
+            "steps": request.form.get('steps'),
+            "heart_rate": request.form.get('heart_rate'),
+            "calories_burned": request.form.get('calories_burned'),
+            "distance_walked": request.form.get('distance_walked')
+        }
+        workouts.append(workout)
+        save_data(workouts)
+        return redirect(url_for('home'))
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('index'))
+    return render_template('index.html', workouts=workouts)
 
-@app.route('/dashboard')
-@login_required
-def dashboard():
-    return render_template('dashboard.html', username=current_user.username, workouts=workouts)
+# API to Get Data (for Debugging or Future Use)
+@app.route('/data')
+def get_data():
+    return jsonify(load_data())
 
-@app.route('/submit', methods=['POST'])
-@login_required
-def submit_workout():
-    workout_data = {
-        'workout_name': request.form['workout-name'],
-        'steps': request.form['steps'],
-        'duration': request.form['duration'],
-        'calories': request.form['calories'],
-        'heart_rate': request.form['heart-rate'],
-        'workout_date': request.form['workout-date'],
-    }
-    workouts.append(workout_data)
-    return redirect(url_for('dashboard'))
+# Graphs Route
+@app.route('/graphs')
+def graphs():
+    workouts = load_data()
 
-@app.route('/leaderboard')
-def leaderboard():
-    # Sort workouts by steps (this can be expanded for leaderboard logic)
-    sorted_workouts = sorted(workouts, key=lambda x: int(x['steps']), reverse=True)
-    return render_template('leaderboard.html', workouts=sorted_workouts)
+    if not workouts:
+        return "No data available to plot.", 404
 
-@app.route('/weather', methods=['GET'])
-def weather():
-    # Get the latitude and longitude from the query parameters
-    lat = request.args.get('lat')
-    lon = request.args.get('lon')
+    dates = [w['date'] for w in workouts]
+    steps = [int(w['steps']) for w in workouts]
+    heart_rates = [int(w['heart_rate']) for w in workouts if w['heart_rate']]
+    calories = [float(w['calories_burned']) for w in workouts if w['calories_burned']]
+    distances = [float(w['distance_walked']) for w in workouts if w['distance_walked']]
 
-    if lat and lon:
-        api_key = "your_openweathermap_api_key_here"  # Replace with your actual API key
-        url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}&units=metric"
-        
-        try:
-            # Make the request to the OpenWeatherMap API
-            response = requests.get(url)
-            weather_data = response.json()
+    # Create Subplots for Multiple Graphs
+    fig, axes = plt.subplots(2, 2, figsize=(10, 8))
 
-            if response.status_code == 200:  # If the request is successful
-                # Extract relevant data
-                weather = {
-                    "city": weather_data.get("name"),
-                    "temperature": weather_data["main"]["temp"],
-                    "description": weather_data["weather"][0]["description"],
-                    "icon": weather_data["weather"][0]["icon"]
-                }
-                return render_template('weather.html', weather=weather)
-            else:
-                return jsonify({"error": "Unable to fetch weath er data"}), 400
-        except requests.exceptions.RequestException as e:
-            return jsonify({"error": f"An error occurred: {e}"}), 500
-    else:
-        return jsonify({"error": 'Location (lat/lon) not provided'}), 400
+    # Steps Graph
+    axes[0, 0].plot(dates, steps, marker='o', color='b', label='Steps')
+    axes[0, 0].set_title("Steps Over Time")
+    axes[0, 0].set_xlabel("Date")
+    axes[0, 0].set_ylabel("Steps")
 
+    # Heart Rate Graph
+    if heart_rates:
+        axes[0, 1].plot(dates[:len(heart_rates)], heart_rates, marker='s', color='r', label='Heart Rate')
+        axes[0, 1].set_title("Heart Rate Over Time")
+        axes[0, 1].set_xlabel("Date")
+        axes[0, 1].set_ylabel("Heart Rate (bpm)")
 
-@app.route('/export_csv')
-@login_required
-def export_csv():
-    filename = "workouts.csv"
-    with open(filename, mode='w', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=["workout_name", "steps", "duration", "calories", "heart_rate", "workout_date"])
-        writer.writeheader()
-        writer.writerows(workouts)
-    return redirect(url_for('dashboard'))
+    # Calories Burned Graph
+    if calories:
+        axes[1, 0].plot(dates[:len(calories)], calories, marker='^', color='g', label='Calories Burned')
+        axes[1, 0].set_title("Calories Burned Over Time")
+        axes[1, 0].set_xlabel("Date")
+        axes[1, 0].set_ylabel("Calories")
 
-steps_data = [2000, 4000, 6000, 8000, 10000]
-dates = ['2025-02-01', '2025-02-02', '2025-02-03', '2025-02-04', '2025-02-05']
+    # Distance Walked Graph
+    if distances:
+        axes[1, 1].plot(dates[:len(distances)], distances, marker='x', color='purple', label='Distance Walked')
+        axes[1, 1].set_title("Distance Walked Over Time")
+        axes[1, 1].set_xlabel("Date")
+        axes[1, 1].set_ylabel("Distance (km)")
 
-# Route for the graph page
-@app.route('/graph')
-def graph():
-    # Create a graph using the dummy data
-    fig, ax = plt.subplots()
-    ax.plot(dates, steps_data, marker='o', color='b', label='Steps')
+    plt.tight_layout()
 
-    # Add labels and title
-    ax.set_xlabel('Date')
-    ax.set_ylabel('Steps')
-    ax.set_title('Steps Over Time')
-
-    # Save the plot to a BytesIO object and encode it in base64 to embed in HTML
+    # Save plot as base64
     img = io.BytesIO()
     plt.savefig(img, format='png')
     img.seek(0)
     plot_url = base64.b64encode(img.getvalue()).decode('utf8')
 
-    # Pass the plot to the HTML page
-    return render_template('graph.html', plot_url=plot_url)
+    return render_template('graphs.html', plot_url=plot_url)
+
+# Progress Report Route
+@app.route('/progress')
+def progress():
+    workouts = load_data()
+
+    if not workouts:
+        return "No progress data available.", 404
+
+    weekly_steps = sum([int(w['steps']) for w in workouts if datetime.datetime.strptime(w['date'], '%Y-%m-%d') >= datetime.datetime.today() - datetime.timedelta(days=7)])
+    monthly_steps = sum([int(w['steps']) for w in workouts if datetime.datetime.strptime(w['date'], '%Y-%m-%d') >= datetime.datetime.today() - datetime.timedelta(days=30)])
+
+    return render_template('progress.html', weekly_steps=weekly_steps, monthly_steps=monthly_steps)
+
+# Weather Route (Location & Weather)
+@app.route('/weather')
+def weather():
+    # Example API for weather (replace with actual API and key)
+    api_key = "your_openweather_api_key"
+    location = "London"
+    weather_url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}"
+
+    response = requests.get(weather_url).json()
+
+    temperature = response['main']['temp'] - 273.15  # Convert from Kelvin to Celsius
+    weather_desc = response['weather'][0]['description']
+
+    return render_template('weather.html', temperature=temperature, weather_desc=weather_desc)
 
 if __name__ == '__main__':
     app.run(debug=True)
