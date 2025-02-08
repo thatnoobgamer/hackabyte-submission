@@ -1,5 +1,13 @@
 /* <weight>: Use a value from 100 to 900
 <uniquifier>: Use a unique and descriptive class name */
+* {
+  font-family: "Onest", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
 
 #font-normal {
   font-family: "Onest", serif;
@@ -31,9 +39,37 @@
 }
 
 #main {
-  font-family: "Onest", serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
   text-align: center;
+}
+
+#header {
+  position: relative;
+  background-color: #333;
+  overflow: hidden;
+  list-style-type: none;
+  padding-left: 40%;
+}
+
+#navli {
+  float: left;
+}
+
+#navli a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#navli a:hover {
+  background-color: white;
+  color: black
 }
