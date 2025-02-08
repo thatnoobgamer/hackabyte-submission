@@ -115,33 +115,59 @@ button:hover {
   color: #2e59d9;
 }
 
-/* Graph Page Styling */
-.graph-container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+/* Progress Bar Styling */
+.progress-bar-container {
+  margin-top: 30px;
+  text-align: center;
 }
 
-.graph {
-  padding: 20px;
-  text-align: center;
+.progress-bar {
+  width: 100%;
+  height: 15px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #4e73df;
+  width: 50%;
+  transition: width 0.3s ease;
+}
+
+/* Dark Mode Styling */
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode .navbar {
+  background-color: #333;
+}
+
+body.dark-mode .btn-submit {
+  background-color: #555;
+}
+
+body.dark-mode .form input, .form button {
+  background-color: #333;
+  color: white;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .container, .graph-container {
-    width: 90%;
-    padding: 20px;
+      width: 90%;
+      padding: 20px;
   }
   
   h1.title {
-    font-size: 24px;
+      font-size: 24px;
   }
   
   .navbar-brand {
-    font-size: 18px;
+      font-size: 18px;
   }
 }

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Tracker</title>
     <link rel="stylesheet" href="styles.css">
-
     <!-- Google Translate Widget -->
     <script type="text/javascript">
         function googleTranslateElementInit() {
@@ -19,41 +18,83 @@
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="navbar-container">
-      <a href="/" class="navbar-brand">Health Tracker</a>
-      <div id="google_translate_element"></div>
-    </div>
-  </nav>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">Health Tracker</a>
+            <div id="google_translate_element"></div>
+            <button id="dark-mode-toggle" class="btn-link">Toggle Dark Mode</button>
+        </div>
+    </nav>
 
-  <!-- Main Content -->
-  <div class="container">
-    <h1 class="title">Track Your Workout</h1>
-    
-    <form action="/submit" method="POST" class="form">
-      <label for="workout-name">Workout Name</label>
-      <input type="text" id="workout-name" name="workout-name" placeholder="Enter workout name" required>
-      
-      <label for="steps">Steps</label>
-      <input type="number" id="steps" name="steps" placeholder="Enter steps" required>
-      
-      <label for="duration">Duration (minutes)</label>
-      <input type="number" id="duration" name="duration" placeholder="Enter duration" required>
-      
-      <label for="calories">Calories Burned</label>
-      <input type="number" id="calories" name="calories" placeholder="Enter calories burned" required>
-      
-      <label for="heart-rate">Heart Rate</label>
-      <input type="number" id="heart-rate" name="heart-rate" placeholder="Enter heart rate" required>
-      
-      <button type="submit" class="btn-submit">Submit</button>
-    </form>
-    
-    <div class="links">
-      <a href="/graph" class="btn-link">View Graph</a>
-    </div>
-  </div>
+    <!-- Main Content -->
+    <div class="container">
+        <h1 class="title">Track Your Workout</h1>
+        
+        <form action="/submit" method="POST" class="form">
+            <div id="workout-fields">
+                <div class="workout-field">
+                    <label for="workout-name">Workout Name</label>
+                    <input type="text" name="workout-name" placeholder="Enter workout name" required>
+                    <label for="steps">Steps</label>
+                    <input type="number" name="steps" placeholder="Enter steps" required>
+                    <label for="duration">Duration (minutes)</label>
+                    <input type="number" name="duration" placeholder="Enter duration" required>
+                    <label for="calories">Calories Burned</label>
+                    <input type="number" name="calories" placeholder="Enter calories burned" required>
+                    <label for="heart-rate">Heart Rate</label>
+                    <input type="number" name="heart-rate" placeholder="Enter heart rate" required>
+                    <label for="workout-date">Date</label>
+                    <input type="date" name="workout-date" required>
+                </div>
+            </div>
+            <button type="button" class="btn-link" id="add-workout">Add Another Workout</button>
+            <button type="submit" class="btn-submit">Submit</button>
+        </form>
+        
+        <div class="progress-bar-container">
+            <label for="steps-goal">Set Your Daily Steps Goal</label>
+            <input type="number" id="steps-goal" placeholder="Enter your steps goal">
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: 50%"></div>
+            </div>
+        </div>
 
+        <div class="links">
+            <a href="/graph" class="btn-link">View Graph</a>
+            <a href="/export_csv" class="btn-link">Export to CSV</a>
+        </div>
+    </div>
+
+    <script>
+        // Dynamic Workout Fields
+        document.getElementById('add-workout').addEventListener('click', function() {
+            let workoutFields = document.getElementById('workout-fields');
+            let newWorkout = document.createElement('div');
+            newWorkout.classList.add('workout-field');
+            
+            newWorkout.innerHTML = `
+                <label for="workout-name">Workout Name</label>
+                <input type="text" name="workout-name" placeholder="Enter workout name" required>
+                <label for="steps">Steps</label>
+                <input type="number" name="steps" placeholder="Enter steps" required>
+                <label for="duration">Duration (minutes)</label>
+                <input type="number" name="duration" placeholder="Enter duration" required>
+                <label for="calories">Calories Burned</label>
+                <input type="number" name="calories" placeholder="Enter calories burned" required>
+                <label for="heart-rate">Heart Rate</label>
+                <input type="number" name="heart-rate" placeholder="Enter heart rate" required>
+                <label for="workout-date">Date</label>
+                <input type="date" name="workout-date" required>
+            `;
+            
+            workoutFields.appendChild(newWorkout);
+        });
+
+        // Dark Mode Toggle
+        document.getElementById('dark-mode-toggle').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
 </body>
 </html>
