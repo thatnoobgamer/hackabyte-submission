@@ -4,11 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <script>
+        function getWeather() {
+    // Check if geolocation is available in the browser
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Make a request to the backend (Flask) to get the weather
+            fetch(`/get_weather?lat=${latitude}&lon=${longitude}`)
+                .then(response => response.json())
+                .then(data => {
+                    const weatherElement = document.getElementById('weather');
+                    weatherElement.innerHTML = `
+                        <h2>Weather for Your Location</h2>
+                        <p>Location: ${data.name}</p>
+                        <p>Temperature: ${data.main.temp}°C</p>
+                        <p>Weather: ${data.weather[0].description}</p>
+                        <p>Humidity: ${data.main.humidity}%</p>
+                        <p>Wind Speed: ${data.wind.speed} m/s</p>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error fetching weather:', error);
+                });
+        }, function(error) {
+            console.error('Error getting geolocation:', error);
+            alert('Unable to retrieve location. Weather could not be fetched.');
+        });
+    } else {
+        alert('Geolocation is not supported by this browser.');
+    }
+}
+
+// Call getWeather function when the page loads
+window.onload = getWeather;
+    </script>
     <h1>Weather Information</h1>
-    <p>Temperature: {{ temperature }}°C</p>
-    <p>Weather: {{ weather_desc }}</p>
+    <div id="weather" class="weather-container" style="text-align: center;">
+        <!-- Weather data will be inserted here by JavaScript -->
+    </div>
 </body>
 </html>

@@ -1,0 +1,26 @@
+[
+    {
+        "date": "2025-02-08",
+        "workout_name": "running",
+        "steps": "4367",
+        "heart_rate": "197",
+        "calories_burned": "352",
+        "distance_walked": "3"
+    },
+    {
+        "date": "2025-02-07",
+        "workout_name": "walking",
+        "steps": "3256",
+        "heart_rate": "145",
+        "calories_burned": "223",
+        "distance_walked": "2"
+    },
+    {
+        "date": "2025-02-06",
+        "workout_name": "sprinting",
+        "steps": "34",
+        "heart_rate": "199",
+        "calories_burned": "23",
+        "distance_walked": "4"
+    }
+]

@@ -1,15 +1,22 @@
+/* General Styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Onest", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
   background-color: #f4f4f9;
   margin: 0;
   padding: 0;
+  animation: fadeIn 1.5s ease-out; /* Page fade-in effect */
 }
 
+/* Navbar Styling */
 nav {
   background-color: #333;
   padding: 10px;
   display: flex;
   justify-content: center;
+  animation: slideDown 0.5s ease-in-out;
 }
 
 nav a {
@@ -17,23 +24,31 @@ nav a {
   padding: 14px;
   text-decoration: none;
   margin: 0 10px;
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s ease;
 }
 
 nav a:hover {
   background-color: #575757;
+  transform: scale(1.1); /* Slightly enlarge on hover */
 }
 
+/* Header Styling */
 h1 {
   text-align: center;
   color: #333;
   margin-top: 30px;
+  animation: slideUp 1s ease-out; /* Slide-in effect */
 }
 
+/* Form Styling */
 form {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 20px;
+  animation: fadeInUp 1s ease-in-out; /* Form fade-in-up effect */
 }
 
 form input {
@@ -42,8 +57,16 @@ form input {
   width: 300px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  transition: all 0.3s ease;
 }
 
+form input:focus {
+  outline: none;
+  border-color: #4CAF50; /* Green border on focus */
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* Button Styling */
 form button {
   background-color: #4CAF50;
   color: white;
@@ -51,8 +74,88 @@ form button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  animation: buttonFadeIn 0.8s ease-out; /* Fade-in button */
 }
 
 form button:hover {
   background-color: #45a049;
+  transform: translateY(-3px); /* Slightly raise button on hover */
+}
+
+form button:active {
+  transform: translateY(1px); /* Slightly lower button on click */
+}
+
+/* Animation for Page Fade-in */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+/* Animation for Navbar Slide-down */
+@keyframes slideDown {
+  from {
+      transform: translateY(-100%);
+  }
+  to {
+      transform: translateY(0);
+  }
+}
+
+/* Animation for Header Slide-up */
+@keyframes slideUp {
+  from {
+      transform: translateY(100%);
+  }
+  to {
+      transform: translateY(0);
+  }
+}
+
+/* Animation for Form Fade-in-Up */
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      transform: translateY(50px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Animation for Button Fade-in */
+@keyframes buttonFadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+.weather-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px;
+  width: 300px;
+  text-align: center;
+}
+
+.weather-container h2 {
+  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.weather-container p {
+  font-size: 1.2rem;
+  color: #555;
 }

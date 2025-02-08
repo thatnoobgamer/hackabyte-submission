@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workout Tracker</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav>
@@ -24,11 +27,12 @@
         <button type="submit">Add Workout</button>
     </form>
 
-    <h2>Workout History</h2>
-    <ul>
+    <h2 style="text-align: center;">Workout History</h2>
+    <ul style="text-align: center; list-style-type: none;">
         {% for workout in workouts %}
             <li>{{ workout.date }} - {{ workout.workout_name }}: {{ workout.steps }} steps</li>
         {% endfor %}
     </ul>
+    <p style="text-align: center;">made by yajath b and powered by python, flask, and other cool stuff</p>
 </body>
 </html>
