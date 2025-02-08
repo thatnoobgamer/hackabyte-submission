@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import random
 import csv
-import os
+import io, base64, matplotlib.pyplot as plt
 import requests
 
 # Initialize Flask App
@@ -80,30 +80,36 @@ def leaderboard():
     sorted_workouts = sorted(workouts, key=lambda x: int(x['steps']), reverse=True)
     return render_template('leaderboard.html', workouts=sorted_workouts)
 
-import requests
-from flask import Flask, render_template, request, jsonify
-
-app = Flask(__name__)
-
-@app.route('/weather')
+@app.route('/weather', methods=['GET'])
 def weather():
-    # Get latitude and longitude from the query string
+    # Get the latitude and longitude from the query parameters
     lat = request.args.get('lat')
     lon = request.args.get('lon')
 
     if lat and lon:
-        # Use OpenWeatherMap API to get the weather data
-        api_key = "68c62c52de388d389eb3f205e9e7b45c"
-        url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}"
-        response = requests.get(url)
-        weather_data = response.json()
+        api_key = "your_openweathermap_api_key_here"  # Replace with your actual API key
+        url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}&units=metric"
+        
+        try:
+            # Make the request to the OpenWeatherMap API
+            response = requests.get(url)
+            weather_data = response.json()
 
-        return jsonify(weather_data)
+            if response.status_code == 200:  # If the request is successful
+                # Extract relevant data
+                weather = {
+                    "city": weather_data.get("name"),
+                    "temperature": weather_data["main"]["temp"],
+                    "description": weather_data["weather"][0]["description"],
+                    "icon": weather_data["weather"][0]["icon"]
+                }
+                return render_template('weather.html', weather=weather)
+            else:
+                return jsonify({"error": "Unable to fetch weath er data"}), 400
+        except requests.exceptions.RequestException as e:
+            return jsonify({"error": f"An error occurred: {e}"}), 500
     else:
-        return jsonify({'error': 'Location not provided'}), 400
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        return jsonify({"error": 'Location (lat/lon) not provided'}), 400
 
 
 @app.route('/export_csv')
@@ -115,6 +121,30 @@ def export_csv():
         writer.writeheader()
         writer.writerows(workouts)
     return redirect(url_for('dashboard'))
+
+steps_data = [2000, 4000, 6000, 8000, 10000]
+dates = ['2025-02-01', '2025-02-02', '2025-02-03', '2025-02-04', '2025-02-05']
+
+# Route for the graph page
+@app.route('/graph')
+def graph():
+    # Create a graph using the dummy data
+    fig, ax = plt.subplots()
+    ax.plot(dates, steps_data, marker='o', color='b', label='Steps')
+
+    # Add labels and title
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Steps')
+    ax.set_title('Steps Over Time')
+
+    # Save the plot to a BytesIO object and encode it in base64 to embed in HTML
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plot_url = base64.b64encode(img.getvalue()).decode('utf8')
+
+    # Pass the plot to the HTML page
+    return render_template('graph.html', plot_url=plot_url)
 
 if __name__ == '__main__':
     app.run(debug=True)
