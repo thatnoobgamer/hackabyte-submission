@@ -1,0 +1,39 @@
+/* <weight>: Use a value from 100 to 900
+<uniquifier>: Use a unique and descriptive class name */
+
+#font-normal {
+  font-family: "Onest", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#font-bold {
+  font-family: "Onest", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+#font-thin {
+  font-family: "Onest", serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+}
+
+#footer {
+  font-family: "Onest", serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+  text-align: center;
+}
+
+#main {
+  font-family: "Onest", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  text-align: center;
+}
