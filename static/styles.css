@@ -13,8 +13,12 @@ body {
   padding: 0;
   margin: 0;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Title Styling */
 h1.title {
   font-size: 28px;
   font-weight: 600;
@@ -30,12 +34,14 @@ h1.title {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .navbar-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .navbar-brand {
@@ -45,13 +51,10 @@ h1.title {
   text-decoration: none;
 }
 
-#google_translate_element {
-  margin-left: auto;
-}
-
 /* Main Content Styling */
 .container {
-  max-width: 600px;
+  max-width: 800px;
+  width: 100%;
   margin: 40px auto;
   background-color: white;
   padding: 30px;
@@ -135,6 +138,20 @@ button:hover {
   background-color: #4e73df;
   width: 50%;
   transition: width 0.3s ease;
+}
+
+/* Graph Styling */
+.graph-container {
+  max-width: 800px;
+  width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.graph {
+  width: 100%;
+  height: 400px; /* Adjusting graph height */
 }
 
 /* Dark Mode Styling */
