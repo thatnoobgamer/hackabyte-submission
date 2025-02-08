@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="title">Weather</h1>
+    <p id="weather-status">Loading weather data...</p>
+
+    <script>
+        // Function to get the user's location using the Geolocation API
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(fetchWeather);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Function to fetch weather data from the server
+        function fetchWeather(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            
+            // Send the user's location to the backend via a fetch request
+            fetch(`/weather?lat=${latitude}&lon=${longitude}`)
+                .then(response => response.json())
+                .then(data => {
+                    const weatherStatus = document.getElementById("weather-status");
+                    if (data.weather) {
+                        const description = data.weather[0].description;
+                        const temperature = (data.main.temp - 273.15).toFixed(2); // Convert from Kelvin to Celsius
+                        weatherStatus.innerHTML = `Current Weather: ${description}<br>Temperature: ${temperature} °C`;
+                    } else {
+                        weatherStatus.innerHTML = 'Could not fetch weather data.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                    document.getElementById("weather-status").innerHTML = 'Error fetching weather data.';
+                });
+        }
+
+        // Call the function to get the user's location
+        window.onload = getLocation;
+    </script>
+{% endblock %}
