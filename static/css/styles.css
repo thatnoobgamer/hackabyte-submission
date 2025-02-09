@@ -173,3 +173,56 @@ form input, form button {
     width: 90%;
 }
 }
+/* Styling for the Progress Reports Section */
+#progressReports {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+/* Individual workout report styling */
+.workout-report {
+  background-color: #fff;
+  padding: 20px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for each workout report */
+.workout-report:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Workout Report Header Styling */
+.workout-report h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Workout Report Text Styling */
+.workout-report p {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 5px 0;
+}
+
+/* Styling for Steps value */
+.workout-report .steps {
+  font-weight: bold;
+  color: #4CAF50; /* Green color for steps */
+}
+
+/* Date Text Styling */
+.workout-report .date {
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 10px;
+}

@@ -68,32 +68,38 @@
             });
 
             // Calculate and display steps in the last 7 and 30 days
-            calculateSteps(progressData);
+            calculateProgress(progressData);
         }
 
         // Function to calculate and display total steps for the last 7 and 30 days
-        function calculateSteps(progressData) {
+        function calculateProgress(progressData) {
             const today = new Date();
-            let steps7Days = 0;
-            let steps30Days = 0;
+            let steps7Days = 0, calories7Days = 0, distance7Days = 0, heartRate7Days = 0;
+            let count7Days = 0;
 
             progressData.forEach((workout) => {
                 const workoutDate = new Date(workout.date);
                 const diffDays = Math.floor((today - workoutDate) / (1000 * 60 * 60 * 24));
 
                 if (diffDays <= 7) {
-                    steps7Days += workout.steps;
-                }
-
-                if (diffDays <= 30) {
-                    steps30Days += workout.steps;
+                    const validSteps = !isNaN(workout.steps) ? parseInt(workout.steps) : 0;
+                    const validCalories = !isNaN(workout.calories) ? parseInt(workout.calories) : 0;
+                    const validDistance = !isNaN(workout.distance) ? parseFloat(workout.distance) : 0;
+                    const validheartRate = !isNaN(workout.heartRate) ? parseFloat(workout.heartRate) : 0;
+                    steps7Days += validSteps;
+                    calories7Days += validCalories;
+                    distance7Days += validDistance;
+                    heartRate7Days += validheartRate;
+                    count7Days++;
                 }
             });
 
-            // Display the results
+            const avgHeartRate7Days = count7Days ? (heartRate7Days / count7Days).toFixed(2) : 0;
             document.getElementById('7daystep').textContent = `Steps in the last 7 days: ${steps7Days}`;
-            document.getElementById('30daystep').textContent = `Steps in the last 30 days: ${steps30Days}`;
-        }
+            document.getElementById('7daycalories').textContent = `Calories in the last 7 days: ${calories7Days} kcal`;
+            document.getElementById('7daydistance').textContent = `Distance in the last 7 days: ${distance7Days} km`;
+            document.getElementById('7dayheartrate').textContent = `Average Heart Rate in the last 7 days: ${avgHeartRate7Days} bpm`;
+}
 
         // Call loadProgressData when the page is loaded to display existing progress
         window.onload = loadProgressData;
@@ -109,6 +115,20 @@
             // Save data to localStorage
             saveWorkoutData(workoutName, steps, heartRate, calories, distance);
         });
+        progressData.forEach((workout) => {
+            const workoutDiv = document.createElement('div');
+            workoutDiv.classList.add('workout-report');
+            workoutDiv.innerHTML = `
+                <h3>${workout.workoutName}</h3>
+                <p class="date">Date: ${workout.date}</p>
+                <p class="steps">Steps: ${workout.steps}</p>
+                <p>Heart Rate: ${workout.heartRate} bpm</p>
+                <p>Calories: ${workout.calories} kcal</p>
+                <p>Distance: ${workout.distance} km</p>
+            `;
+            progressContainer.appendChild(workoutDiv);
+});
+
     </script>
     <nav>
         <a href="/">Home</a>
@@ -117,8 +137,10 @@
         <a href="/weather">Weather</a>
     </nav>
     <h1>Progress Report</h1>
-    <p style="text-align: center;" id="7daystep">Steps in the last 7 days: </p>
-    <p style="text-align: center;" id="30daystep">Steps in the last 30 days: </p>
+    <p style="text-align: center;" id="7daystep">Loading: </p>
+    <p style="text-align: center;" id="7daycalories">Loading: </p>
+    <p style="text-align: center;" id="7daydistance">Loading: </p>
+    <p style="text-align: center;" id="7dayheartrate">Loading: </p>
     <div id="progressReports"></div>
 </body>
 </html>
