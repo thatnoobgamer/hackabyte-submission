@@ -183,7 +183,7 @@ h1 {
   }
 }
 
-.weather-card {
+#weather-card {
   background-color: white;
   padding: 2rem;
   border-radius: 8px;
@@ -193,24 +193,20 @@ h1 {
   text-align: center;
 }
 
-.weather-card h2 {
+#weather-card h2 {
   font-size: 2rem;
   color: #2980b9;
   margin-bottom: 1.5rem;
 }
 
-.weather-card p {
+#weather-card p {
   font-size: 1.2rem;
   margin: 0.5rem 0;
 }
 
-.weather-card strong {
-  color: #2980b9;
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
-  .weather-card {
+  #weather-card {
       width: 100%;
       max-width: 350px;
   }
