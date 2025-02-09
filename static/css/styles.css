@@ -1,232 +1,217 @@
-/* General Styles */
-html, body {
-  height: 100%;
-  font-family: "Onest", serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  background-color: #f4f4f9;
+/* General styles */
+* {
   margin: 0;
   padding: 0;
-  animation: fadeIn 1.5s ease-out; /* Page fade-in effect */
+  box-sizing: border-box;
+  font-family: 'Onest', sans-serif;
 }
 
-/* Navbar Styling */
+body {
+  background-color: #f4f4f9;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
 nav {
-  background-color: #333;
-  padding: 10px;
+  background-color: #2c3e50;
+  padding: 1rem;
   display: flex;
-  justify-content: center;
-  animation: slideDown 0.5s ease-in-out;
+  justify-content: space-around;
+  align-items: center;
 }
 
 nav a {
   color: white;
-  padding: 14px;
-  text-decoration: none;
-  margin: 0 10px;
-  position: relative;
-  display: inline-block;
-  transition: all 0.3s ease;
-  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 nav a:hover {
-  background-color: #575757;
-  transform: scale(1.1); /* Slightly enlarge on hover */
+  background-color: #34495e;
 }
 
-/* Header Styling */
+.container {
+  width: 80%;
+  margin: 2rem auto;
+}
+
 h1 {
   text-align: center;
-  color: #333;
-  margin-top: 30px;
-  animation: slideUp 1s ease-out; /* Slide-in effect */
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
-/* Form Styling */
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px;
-  animation: fadeInUp 1s ease-in-out; /* Form fade-in-up effect */
-}
-
-form input {
-  margin: 5px;
-  padding: 10px;
-  width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-}
-
-form input:focus {
-  outline: none;
-  border-color: #4CAF50; /* Green border on focus */
-  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6); /* More noticeable focus shadow */
-}
-
-/* Button Styling */
-form button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  animation: buttonFadeIn 0.8s ease-out; /* Fade-in button */
-}
-
-form button:hover {
-  background-color: #45a049;
-  transform: translateY(-5px); /* Slightly more responsive hover */
-}
-
-form button:active {
-  transform: translateY(1px); /* Slightly lower button on click */
-}
-
-/* Animation for Page Fade-in */
-@keyframes fadeIn {
-from {
-    opacity: 0;
-}
-to {
-    opacity: 1;
-}
-}
-
-/* Animation for Navbar Slide-down */
-@keyframes slideDown {
-from {
-    transform: translateY(-100%);
-}
-to {
-    transform: translateY(0);
-}
-}
-
-/* Animation for Header Slide-up */
-@keyframes slideUp {
-from {
-    transform: translateY(100%);
-}
-to {
-    transform: translateY(0);
-}
-}
-
-/* Animation for Form Fade-in-Up */
-@keyframes fadeInUp {
-from {
-    opacity: 0;
-    transform: translateY(50px);
-}
-to {
-    opacity: 1;
-    transform: translateY(0);
-}
-}
-
-/* Animation for Button Fade-in */
-@keyframes buttonFadeIn {
-from {
-    opacity: 0;
-}
-to {
-    opacity: 1;
-}
-}
-
-/* Weather Container */
-.weather-container {
-background-color: #fff;
-border-radius: 8px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-padding: 20px;
-margin: 20px;
-width: 300px;
-max-width: 100%; /* Makes it responsive */
-text-align: center;
-}
-
-.weather-container h2 {
-color: #333;
-font-size: 1.8rem;
-margin-bottom: 10px;
-}
-
-.weather-container p {
-font-size: 1.2rem;
-color: #555;
-}
-
-/* Media Query for Mobile */
-@media (max-width: 600px) {
-form {
-    margin: 10px;
-}
-form input, form button {
-    width: 90%;
-}
-}
-/* Styling for the Progress Reports Section */
-#progressReports {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
-}
-
-/* Individual workout report styling */
-.workout-report {
-  background-color: #fff;
-  padding: 20px;
-  margin: 10px 0;
+.workout-form {
+  background-color: white;
+  padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 600px;
-  text-align: left;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 3rem;
 }
 
-/* Hover effect for each workout report */
-.workout-report:hover {
-  transform: scale(1.02);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+.workout-form h2 {
+  margin-bottom: 1rem;
+  font-size: 2rem;
 }
 
-/* Workout Report Header Styling */
-.workout-report h3 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 10px;
+.workout-form label {
+  display: block;
+  margin: 0.5rem 0;
 }
 
-/* Workout Report Text Styling */
-.workout-report p {
-  font-size: 1.1rem;
-  color: #555;
-  margin: 5px 0;
+.workout-form input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1.2rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.workout-form select {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1.2rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
-/* Styling for Steps value */
-.workout-report .steps {
-  font-weight: bold;
-  color: #4CAF50; /* Green color for steps */
+.workout-form button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
 }
 
-/* Date Text Styling */
-.workout-report .date {
-  font-size: 0.9rem;
-  color: #888;
-  margin-top: 10px;
+.workout-form button:hover {
+  background-color: #3498db;
 }
 
-.google_translate_element {
+.goals {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.goal {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 30%;
+  margin-bottom: 2rem;
   text-align: center;
+}
+
+.goal h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  color: #2980b9;
+}
+
+.goal p {
+  font-size: 1.1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .goal {
+      width: 100%;
+      margin-bottom: 1rem;
+  }
+}
+#progressReports {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.workout-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  text-align: center;
+  margin: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.workout-card:hover {
+  transform: scale(1.05);
+}
+
+.workout-name {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #2980b9;
+  margin-bottom: 1rem;
+}
+
+.workout-card p {
+  font-size: 1.1rem;
+  margin: 0.3rem 0;
+}
+
+.workout-card p:first-child {
+  margin-top: 0;
+}
+
+#7daystep, #7daycalories, #7daydistance, #7dayheartrate {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .workout-card {
+      width: 100%;
+      max-width: 300px;
+  }
+}
+
+.weather-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.weather-card h2 {
+  font-size: 2rem;
+  color: #2980b9;
+  margin-bottom: 1.5rem;
+}
+
+.weather-card p {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.weather-card strong {
+  color: #2980b9;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .weather-card {
+      width: 100%;
+      max-width: 350px;
+  }
 }

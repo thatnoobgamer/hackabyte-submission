@@ -23,40 +23,55 @@ def graphs():
     return render_template('graphs.html')
 
 # Progress Report Route
-@app.route('/progress')
+@app.route('/history')
 def progress():
-    return render_template('progress.html')
+    return render_template('history.html')
 
+# Weather Route (Location & Weather)
 # Weather Route (Location & Weather)
 @app.route('/weather')
 def weather():
-    # Example API for weather (replace with actual API and key)
     api_key = "68c62c52de388d389eb3f205e9e7b45c"
     location = "London"
     weather_url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}"
 
-    response = requests.get(weather_url).json()
+    try:
+        response = requests.get(weather_url)
+        response.raise_for_status()  # Raise HTTPError for bad responses
+        data = response.json()
 
-    temperature = response['main']['temp'] - 273.15  # Convert from Kelvin to Celsius
-    weather_desc = response['weather'][0]['description']
+        temperature = data['main']['temp'] - 273.15  # Convert from Kelvin to Celsius
+        weather_desc = data['weather'][0]['description']
 
-    return render_template('weather.html', temperature=temperature, weather_desc=weather_desc)
+        return render_template('weather.html', temperature=temperature, weather_desc=weather_desc)
+    except requests.exceptions.RequestException as e:
+        # Handle errors (network issues, invalid API key, etc.)
+        return f"An error occurred: {e}"
 
 @app.route('/get_weather')
 def get_weather():
-    # Get latitude and longitude from the query parameters
     lat = request.args.get('lat')
     lon = request.args.get('lon')
     API_KEY = "68c62c52de388d389eb3f205e9e7b45c"
-    # Construct the URL for OpenWeatherMap API
+
+    if not lat or not lon:
+        return jsonify({"error": "Location parameters (lat, lon) are required."}), 400
+
     url = f'http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}&units=metric'
 
-    # Make the API request to OpenWeatherMap
-    response = requests.get(url)
-    weather_data = response.json()
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        weather_data = response.json()
 
-    # Return the weather data as JSON
-    return jsonify(weather_data)
+        # Check if the data returned is valid
+        if 'weather' not in weather_data:
+            return jsonify({"error": "Weather data not found."}), 404
+
+        return jsonify(weather_data)
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": f"Error fetching weather data: {e}"}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)

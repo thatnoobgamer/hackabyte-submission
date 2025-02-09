@@ -4,110 +4,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workout Tracker</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <nav>
         <a href="/">Home</a>
         <a href="/graphs">Graphs</a>
-        <a href="/progress">Progress Report</a>
+        <a href="/history">History</a>
         <a href="/weather">Weather</a>
     </nav>
 
-    <h1>Workout Tracker</h1>
-    <form id="workoutForm">
-        <input type="text" id="workoutName" placeholder="Workout Name" required>
-        <input type="number" id="steps" placeholder="Steps Taken" required>
-        <input type="number" id="heartRate" placeholder="Heart Rate" required>
-        <input type="number" id="caloriesBurned" placeholder="Calories Burned" required>
-        <input type="number" id="distanceWalked" placeholder="Distance Walked (km)" required>
-        <button type="submit">Add Workout</button>
-    </form>
+    <div class="container">
+        <h1>Track Your Workouts</h1>
 
-    <h2 style="text-align: center;">Workout History</h2>
-    <ul id="workoutHistory" style="text-align: center; list-style-type: none;"></ul>
+        <!-- Workout Form -->
+        <div class="workout-form">
+            <h2>Enter Your Workout Details</h2>
+            <form id="workoutForm">
+                <label for="workoutName">Workout Type:</label>
+                <select id="workoutName" required>
+                    <option value="Running">Running</option>
+                    <option value="Cycling">Cycling</option>
+                    <option value="Swimming">Swimming</option>
+                    <option value="Walking">Walking</option>
+                    <option value="Hiking">Hiking</option>
+                    <option value="Treadmill">Treadmill</option>
+                </select>
+                <label for="distance">Distance (km):</label>
+                <label for="distance">NOTE: ENTER DISTANCE FIRST BEFORE MODIFYING OTHER VALUES</label>
+                <input type="number" id="distance" required>
 
-    <p style="text-align: center;">made by yajath b and powered by JavaScript, localStorage, and other cool stuff</p>
+                <label for="steps">Steps (calculated by distance):</label>
+                <input type="number" id="steps">
+
+                <label for="heartRate">Heart Rate (calculated by distance):</label>
+                <input type="number" id="heartRate">
+
+                <label for="calories">Calories Burned (calculated by distance):</label>
+                <input type="number" id="calories">
+
+                <button type="button" id="saveWorkoutButton">Save Workout</button>
+            </form>
+        </div>
+        <script>
+            const distance = document.getElementById('distance');
+            const steps = document.getElementById('steps');
+            const calories = document.getElementById('calories');
+            const heartRate = document.getElementById('heartRate');
+
+            distance.addEventListener('input', distDataChecker);
+            function distDataChecker(e) {
+                steps.value = e.target.value * 1312;
+                heartRate.value = (e.target.value * 10) + 120;
+                calories.value = e.target.value * 62;
+            }
+        </script>
+
+        <!-- Goals Section -->
+        <section class="goals">
+            <h2>Your Fitness Goals</h2>
+            <div class="goal">
+                <h3>Steps Goal</h3>
+                <p>Goal: 10,000 steps per day</p>
+                <p>Progress: <span id="steps-progress">Loading...</span></p>
+                <progress id="steps-progress-bar" value="0" max="100"></progress>
+            </div>
+            <div class="goal">
+                <h3>Calories Goal</h3>
+                <p>Goal: 500 kcal per workout</p>
+                <p>Progress: <span id="calories-progress">Loading...</span></p>
+                <progress id="calories-progress-bar" value="0" max="100"></progress>
+            </div>
+            <div class="goal">
+                <h3>Distance Goal</h3>
+                <p>Goal: 5 km per workout</p>
+                <p>Progress: <span id="distance-progress">Loading...</span></p>
+                <progress id="distance-progress-bar" value="0" max="100"></progress>
+            </div>
+        </section>
+    </div>
 
     <script>
-        // Generate or get user ID from localStorage
         function getUserId() {
             let userId = localStorage.getItem('userId');
             if (!userId) {
-                // Generate a random userId if it doesn't exist
                 userId = 'user_' + Math.floor(Math.random() * 1000000);
                 localStorage.setItem('userId', userId);
             }
             return userId;
         }
 
-        // Save workout data to localStorage for the specific user
         function saveWorkoutData(workoutName, steps, heartRate, calories, distance) {
-            const userId = getUserId(); // Get user ID
-
+            const userId = getUserId();
             let progressData = JSON.parse(localStorage.getItem(userId)) || [];
-
-            // Create a new workout object
             const newWorkout = {
                 workoutName: workoutName,
-                steps: steps,
-                heartRate: heartRate,
-                calories: calories,
-                distance: distance,
+                steps: parseInt(steps),
+                heartRate: parseInt(heartRate),
+                calories: parseFloat(calories),
+                distance: parseFloat(distance),
                 date: new Date().toLocaleString()
             };
-
-            // Add new workout to existing data
             progressData.push(newWorkout);
-
-            // Save the updated progress data back to localStorage
             localStorage.setItem(userId, JSON.stringify(progressData));
+            updateGoals(progressData);
         }
 
-        // Load and display workout history from localStorage
-        function loadWorkoutHistory() {
-            const userId = getUserId(); // Get user ID
-            const progressData = JSON.parse(localStorage.getItem(userId)) || [];
-
-            const workoutHistoryContainer = document.getElementById('workoutHistory');
-            workoutHistoryContainer.innerHTML = ''; // Clear previous history
-
-            progressData.forEach((workout) => {
-                const workoutItem = document.createElement('li');
-                workoutItem.textContent = `${workout.date} - ${workout.workoutName}: ${workout.steps} steps`;
-                workoutHistoryContainer.appendChild(workoutItem);
+        function updateGoals(workoutData) {
+            const stepsGoal = 10000;
+            const caloriesGoal = 500;
+            const distanceGoal = 5;
+            let totalSteps = 0, totalCalories = 0, totalDistance = 0;
+            workoutData.forEach(workout => {
+                totalSteps += workout.steps;
+                totalCalories += workout.calories;
+                totalDistance += workout.distance;
             });
+            document.getElementById('steps-progress').textContent = `${totalSteps} / ${stepsGoal} steps`;
+            document.getElementById('calories-progress').textContent = `${totalCalories} / ${caloriesGoal} kcal`;
+            document.getElementById('distance-progress').textContent = `${totalDistance} / ${distanceGoal} km`;
+            document.getElementById('steps-progress-bar').value = (totalSteps / stepsGoal) * 100;
+            document.getElementById('calories-progress-bar').value = (totalCalories / caloriesGoal) * 100;
+            document.getElementById('distance-progress-bar').value = (totalDistance / distanceGoal) * 100;
         }
 
-        // Form submit event listener
-        document.getElementById('workoutForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
-
+        document.getElementById('saveWorkoutButton').addEventListener('click', function() {
             const workoutName = document.getElementById('workoutName').value;
             const steps = document.getElementById('steps').value;
             const heartRate = document.getElementById('heartRate').value;
-            const calories = document.getElementById('caloriesBurned').value;
-            const distance = document.getElementById('distanceWalked').value;
-
-            // Save the workout data to localStorage
+            const calories = document.getElementById('calories').value;
+            const distance = document.getElementById('distance').value;
             saveWorkoutData(workoutName, steps, heartRate, calories, distance);
-
-            // Reload the workout history
-            loadWorkoutHistory();
         });
 
-        // Load workout history when the page loads
-        window.onload = loadWorkoutHistory;
+        window.onload = function() {
+            const userId = getUserId();
+            const progressData = JSON.parse(localStorage.getItem(userId)) || [];
+            updateGoals(progressData);
+        };
     </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-          new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-        }
-        </script>
-    <div id="google_translate_element"></div>
 </body>
 </html>

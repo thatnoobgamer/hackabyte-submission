@@ -13,7 +13,7 @@
     <nav>
         <a href="/">Home</a>
         <a href="/graphs">Graphs</a>
-        <a href="/progress">Progress Report</a>
+        <a href="/history">History</a>
         <a href="/weather">Weather</a>
     </nav>
     <script>
@@ -28,7 +28,7 @@
             fetch(`/get_weather?lat=${latitude}&lon=${longitude}`)
                 .then(response => response.json())
                 .then(data => {
-                    const weatherElement = document.getElementById('weather');
+                    const weatherElement = document.getElementById('weather-card');
                     weatherElement.innerHTML = `
                         <h2>Weather for Your Location</h2>
                         <p>Location: ${data.name}</p>
@@ -54,7 +54,7 @@
 window.onload = getWeather;
     </script>
     <h1>Weather Information</h1>
-    <div id="weather" class="weather-container" style="margin:0 auto;">
+    <div id="weather-card" class="weather-container">
         <!-- Weather data will be inserted here by JavaScript -->
     </div>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progress Report</title>
+    <title>History</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,10 +55,10 @@
 
             progressData.forEach((workout) => {
                 const workoutDiv = document.createElement('div');
-                workoutDiv.classList.add('workout-report');
+                workoutDiv.classList.add('workout-card');
                 workoutDiv.innerHTML = `
-                    <h3>${workout.workoutName}</h3>
-                    <p>Date: ${workout.date}</p>
+                    <h3 class="workout-name">${workout.workoutName}</h3>
+                    <p class="workout-date">Date: ${workout.date}</p>
                     <p>Steps: ${workout.steps}</p>
                     <p>Heart Rate: ${workout.heartRate} bpm</p>
                     <p>Calories: ${workout.calories} kcal</p>
@@ -99,55 +99,32 @@
             document.getElementById('7daycalories').textContent = `Calories in the last 7 days: ${calories7Days} kcal`;
             document.getElementById('7daydistance').textContent = `Distance in the last 7 days: ${distance7Days} km`;
             document.getElementById('7dayheartrate').textContent = `Average Heart Rate in the last 7 days: ${avgHeartRate7Days} bpm`;
-}
+        }
 
         // Call loadProgressData when the page is loaded to display existing progress
         window.onload = loadProgressData;
-
-        // Example usage: Save workout data when a form is submitted (use your form's actual event handler)
-        document.getElementById('saveWorkoutButton').addEventListener('click', function() {
-            const workoutName = document.getElementById('workoutName').value;
-            const steps = document.getElementById('steps').value;
-            const heartRate = document.getElementById('heartRate').value;
-            const calories = document.getElementById('calories').value;
-            const distance = document.getElementById('distance').value;
-
-            // Save data to localStorage
-            saveWorkoutData(workoutName, steps, heartRate, calories, distance);
-        });
-        progressData.forEach((workout) => {
-            const workoutDiv = document.createElement('div');
-            workoutDiv.classList.add('workout-report');
-            workoutDiv.innerHTML = `
-                <h3>${workout.workoutName}</h3>
-                <p class="date">Date: ${workout.date}</p>
-                <p class="steps">Steps: ${workout.steps}</p>
-                <p>Heart Rate: ${workout.heartRate} bpm</p>
-                <p>Calories: ${workout.calories} kcal</p>
-                <p>Distance: ${workout.distance} km</p>
-            `;
-            progressContainer.appendChild(workoutDiv);
-});
-
     </script>
+
     <nav>
         <a href="/">Home</a>
         <a href="/graphs">Graphs</a>
-        <a href="/progress">Progress Report</a>
+        <a href="/progress">History</a>
         <a href="/weather">Weather</a>
     </nav>
-    <h1>Progress Report</h1>
+    <h1>History</h1>
     <p style="text-align: center;" id="7daystep">Loading: </p>
     <p style="text-align: center;" id="7daycalories">Loading: </p>
     <p style="text-align: center;" id="7daydistance">Loading: </p>
     <p style="text-align: center;" id="7dayheartrate">Loading: </p>
+
     <div id="progressReports"></div>
+
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="text/javascript">
         function googleTranslateElementInit() {
-          new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
         }
-        </script>
+    </script>
     <div id="google_translate_element"></div>
 </body>
 </html>
