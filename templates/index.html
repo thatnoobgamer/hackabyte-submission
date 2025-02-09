@@ -12,6 +12,7 @@
         <a href="/graphs">Graphs</a>
         <a href="/history">History</a>
         <a href="/weather">Weather</a>
+        <a href="/goals">Goals</a>
     </nav>
 
     <div class="container">
@@ -65,21 +66,24 @@
             <h2>Your Fitness Goals</h2>
             <div class="goal">
                 <h3>Steps Goal</h3>
-                <p>Goal: 10,000 steps per day</p>
+                <p id="steps-goal-sayer">Goal: 10,000 steps per day</p>
                 <p>Progress: <span id="steps-progress">Loading...</span></p>
                 <progress id="steps-progress-bar" value="0" max="100"></progress>
+                <p id="steps-percent"></p>
             </div>
             <div class="goal">
                 <h3>Calories Goal</h3>
-                <p>Goal: 500 kcal per day</p>
+                <p id="cal-goal-sayer">Goal: 500 kcal per day</p>
                 <p>Progress: <span id="calories-progress">Loading...</span></p>
                 <progress id="calories-progress-bar" value="0" max="100"></progress>
+                <p id="calories-percent"></p>
             </div>
             <div class="goal">
                 <h3>Distance Goal</h3>
-                <p>Goal: 5 km per day</p>
+                <p id="distance-goal-sayer">Goal: 5 km per day</p>
                 <p>Progress: <span id="distance-progress">Loading...</span></p>
                 <progress id="distance-progress-bar" value="0" max="100"></progress>
+                <p id="distance-percent"></p>
             </div>
         </section>
     </div>
@@ -111,9 +115,18 @@
         }
 
         function updateGoals(workoutData) {
-            const stepsGoal = 10000;
-            const caloriesGoal = 500;
-            const distanceGoal = 5;
+            if (localStorage.getItem('stepsGoal') == null) {
+                localStorage.setItem('stepsGoal', 10000);
+            }
+            if (localStorage.getItem('caloriesGoal') == null) {
+                localStorage.setItem('caloriesGoal', 500);
+            }
+            if (localStorage.getItem('distanceGoal') == null) {
+                localStorage.setItem('distanceGoal', 5);
+            }
+            const stepsGoal = localStorage.getItem('stepsGoal');
+            const caloriesGoal = localStorage.getItem('caloriesGoal');
+            const distanceGoal = localStorage.getItem('distanceGoal');
             let totalSteps = 0, totalCalories = 0, totalDistance = 0;
             workoutData.forEach(workout => {
                 totalSteps += workout.steps;
@@ -126,6 +139,12 @@
             document.getElementById('steps-progress-bar').value = (totalSteps / stepsGoal) * 100;
             document.getElementById('calories-progress-bar').value = (totalCalories / caloriesGoal) * 100;
             document.getElementById('distance-progress-bar').value = (totalDistance / distanceGoal) * 100;
+            document.getElementById('steps-percent').textContent = `${((totalSteps / stepsGoal) * 100).toFixed(2)}%`;
+            document.getElementById('calories-percent').textContent = `${((totalCalories / caloriesGoal) * 100).toFixed(2)}%`;
+            document.getElementById('distance-percent').textContent = `${((totalDistance / distanceGoal) * 100).toFixed(2)}%`;
+            document.getElementById('steps-goal-sayer').textContent = `Goal: ${stepsGoal} steps per day`;
+            document.getElementById('cal-goal-sayer').textContent = `Goal: ${caloriesGoal} kcal per day`;
+            document.getElementById('distance-goal-sayer').textContent = `Goal: ${distanceGoal} km per day`;
         }
 
         document.getElementById('saveWorkoutButton').addEventListener('click', function() {

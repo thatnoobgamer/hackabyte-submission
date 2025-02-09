@@ -211,3 +211,14 @@ h1 {
       max-width: 350px;
   }
 }
+
+canvas {
+  max-width: 400px; /* Adjust width */
+  max-height: 500px; /* Adjust height */
+  margin: auto;
+}
+
+#graphs {
+  display: flex;
+  float: left;
+}

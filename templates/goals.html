@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Goals</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/graphs">Graphs</a>
+        <a href="/history">History</a>
+        <a href="/weather">Weather</a>
+        <a href="/goals">Goals</a>
+    </nav>
+    <h1>Change Your Goals</h1>
+    
+    <div class="container">
+        <form id="goalForm">
+
+            <label for="goalDistance">Goal Distance (km):</label>
+            <input type="number" id="goalDistance" required>
+
+            <label for="goalSteps">Goal Steps:</label>
+            <input type="number" id="goalSteps">
+
+            <label for="goalCalories">Goal Calories Burned:</label>
+            <input type="number" id="goalCalories">
+
+            <button type="button" id="saveGoalButton" onclick="saveGoal()">Save Goal</button>
+        </form>
+    </div>
+
+    <script>
+        const goalDistance = document.getElementById('goalDistance');
+        const goalSteps = document.getElementById('goalSteps');
+        const goalCalories = document.getElementById('goalCalories');
+        function saveGoal() {
+            goalDistanceval = parseFloat(goalDistance.value),
+            goalStepsval = parseInt(goalSteps.value),
+            goalCaloriesval = parseFloat(goalCalories.value)
+            localStorage.setItem('stepsGoal', goalStepsval)
+            localStorage.setItem('distanceGoal', goalDistanceval)
+            localStorage.setItem('caloriesGoal', goalCaloriesval)
+            alert('Goals saved successfully!');
+        }
+    </script>
+</body>

@@ -1,8 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
-import datetime
-import matplotlib.pyplot as plt
-import io
-import base64
+from flask import Flask, render_template, request, jsonify
 import requests
 
 app = Flask(__name__)
@@ -11,6 +7,10 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('index.html')
+
+@app.route('/goals')
+def goals():
+    return render_template('goals.html')
 
 # API to Get Data (for Debugging or Future Use)
 @app.route('/data')

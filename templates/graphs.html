@@ -16,22 +16,25 @@
         <a href="/graphs">Graphs</a>
         <a href="/history">History</a>
         <a href="/weather">Weather</a>
+        <a href="/goals">Goals</a>
     </nav>
 
     <h1>Workout Graphs</h1>
-    <canvas id="workoutGraph" width="400" height="200"></canvas>
+    <div id="graphs">
+        <canvas id="stepsGraph" width="99999" height="99999"></canvas>
+        <canvas id="heartRateGraph" width="99999" height="99999"></canvas>
+        <canvas id="caloriesGraph" width="99999" height="99999"></canvas>
+        <canvas id="distanceGraph" width="99999" height="99999"></canvas>
+    </div>
 
     <script>
-        // Retrieve user data from localStorage
         function getUserData() {
             const userId = localStorage.getItem('userId');
             return JSON.parse(localStorage.getItem(userId)) || [];
         }
 
-        // Extract workout data for the graph
         function getWorkoutData() {
             const workouts = getUserData();
-
             const dates = [];
             const steps = [];
             const heartRates = [];
@@ -49,73 +52,49 @@
             return { dates, steps, heartRates, calories, distances };
         }
 
-        // Generate the graph
-        function generateGraph() {
+        function generateGraph(canvasId, label, dataValues, borderColor) {
             const data = getWorkoutData();
-
-            const ctx = document.getElementById('workoutGraph').getContext('2d');
-
-            const chart = new Chart(ctx, {
-                type: 'line', // Use line graph for workout data
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
                 data: {
                     labels: data.dates,
-                    datasets: [
-                        {
-                            label: 'Steps',
-                            data: data.steps,
-                            borderColor: 'blue',
-                            fill: false
-                        },
-                        {
-                            label: 'Heart Rate (bpm)',
-                            data: data.heartRates,
-                            borderColor: 'red',
-                            fill: false
-                        },
-                        {
-                            label: 'Calories Burned',
-                            data: data.calories,
-                            borderColor: 'green',
-                            fill: false
-                        },
-                        {
-                            label: 'Distance Walked (km)',
-                            data: data.distances,
-                            borderColor: 'purple',
-                            fill: false
-                        }
-                    ]
+                    datasets: [{
+                        label: label,
+                        data: dataValues,
+                        borderColor: borderColor,
+                        fill: false
+                    }]
                 },
                 options: {
                     responsive: true,
                     scales: {
                         x: {
                             type: 'category',
-                            title: {
-                                display: true,
-                                text: 'Date'
-                            }
+                            title: { display: true, text: 'Date' }
                         },
                         y: {
-                            title: {
-                                display: true,
-                                text: 'Values'
-                            }
+                            title: { display: true, text: label }
                         }
                     }
                 }
             });
         }
 
-        // Call the function to generate the graph once the page is loaded
-        window.onload = generateGraph;
+        window.onload = function() {
+            const data = getWorkoutData();
+            generateGraph('stepsGraph', 'Steps', data.steps, 'blue');
+            generateGraph('heartRateGraph', 'Heart Rate (bpm)', data.heartRates, 'red');
+            generateGraph('caloriesGraph', 'Calories Burned', data.calories, 'green');
+            generateGraph('distanceGraph', 'Distance Walked (km)', data.distances, 'purple');
+        };
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="text/javascript">
         function googleTranslateElementInit() {
           new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
         }
-        </script>
+    </script>
     <div id="google_translate_element"></div>
 </body>
 </html>
