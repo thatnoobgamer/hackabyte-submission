@@ -222,3 +222,45 @@ canvas {
   display: flex;
   float: left;
 }
+
+#goalForm {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 3rem;
+}
+
+#goalForm label {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+#goalForm input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1.2rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+#goalForm button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+#goalForm button:hover {
+  background-color: #3498db;
+}
+
+#changegoaltitle {
+  text-align: center;
+  padding-top: 20px;
+  margin-bottom: 1rem
+}
