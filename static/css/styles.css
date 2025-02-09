@@ -226,3 +226,7 @@ form input, form button {
   color: #888;
   margin-top: 10px;
 }
+
+.google_translate_element {
+  text-align: center;
+}

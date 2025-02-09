@@ -57,5 +57,12 @@ window.onload = getWeather;
     <div id="weather" class="weather-container" style="margin:0 auto;">
         <!-- Weather data will be inserted here by JavaScript -->
     </div>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+        </script>
+    <div id="google_translate_element"></div>
 </body>
 </html>
