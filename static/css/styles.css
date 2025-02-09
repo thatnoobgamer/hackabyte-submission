@@ -1,5 +1,6 @@
 /* General Styles */
-body {
+html, body {
+  height: 100%;
   font-family: "Onest", serif;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -27,6 +28,7 @@ nav a {
   position: relative;
   display: inline-block;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 nav a:hover {
@@ -63,7 +65,7 @@ form input {
 form input:focus {
   outline: none;
   border-color: #4CAF50; /* Green border on focus */
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6); /* More noticeable focus shadow */
 }
 
 /* Button Styling */
@@ -80,7 +82,7 @@ form button {
 
 form button:hover {
   background-color: #45a049;
-  transform: translateY(-3px); /* Slightly raise button on hover */
+  transform: translateY(-5px); /* Slightly more responsive hover */
 }
 
 form button:active {
@@ -89,73 +91,85 @@ form button:active {
 
 /* Animation for Page Fade-in */
 @keyframes fadeIn {
-  from {
-      opacity: 0;
-  }
-  to {
-      opacity: 1;
-  }
+from {
+    opacity: 0;
+}
+to {
+    opacity: 1;
+}
 }
 
 /* Animation for Navbar Slide-down */
 @keyframes slideDown {
-  from {
-      transform: translateY(-100%);
-  }
-  to {
-      transform: translateY(0);
-  }
+from {
+    transform: translateY(-100%);
+}
+to {
+    transform: translateY(0);
+}
 }
 
 /* Animation for Header Slide-up */
 @keyframes slideUp {
-  from {
-      transform: translateY(100%);
-  }
-  to {
-      transform: translateY(0);
-  }
+from {
+    transform: translateY(100%);
+}
+to {
+    transform: translateY(0);
+}
 }
 
 /* Animation for Form Fade-in-Up */
 @keyframes fadeInUp {
-  from {
-      opacity: 0;
-      transform: translateY(50px);
-  }
-  to {
-      opacity: 1;
-      transform: translateY(0);
-  }
+from {
+    opacity: 0;
+    transform: translateY(50px);
+}
+to {
+    opacity: 1;
+    transform: translateY(0);
+}
 }
 
 /* Animation for Button Fade-in */
 @keyframes buttonFadeIn {
-  from {
-      opacity: 0;
-  }
-  to {
-      opacity: 1;
-  }
+from {
+    opacity: 0;
+}
+to {
+    opacity: 1;
+}
 }
 
+/* Weather Container */
 .weather-container {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin: 20px;
-  width: 300px;
-  text-align: center;
+background-color: #fff;
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+padding: 20px;
+margin: 20px;
+width: 300px;
+max-width: 100%; /* Makes it responsive */
+text-align: center;
 }
 
 .weather-container h2 {
-  color: #333;
-  font-size: 1.8rem;
-  margin-bottom: 10px;
+color: #333;
+font-size: 1.8rem;
+margin-bottom: 10px;
 }
 
 .weather-container p {
-  font-size: 1.2rem;
-  color: #555;
+font-size: 1.2rem;
+color: #555;
+}
+
+/* Media Query for Mobile */
+@media (max-width: 600px) {
+form {
+    margin: 10px;
+}
+form input, form button {
+    width: 90%;
+}
 }

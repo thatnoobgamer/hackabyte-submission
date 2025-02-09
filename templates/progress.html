@@ -10,6 +10,106 @@
     <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <script>
+        // Generate or get user ID from localStorage
+        function getUserId() {
+            let userId = localStorage.getItem('userId');
+            if (!userId) {
+                // Generate a random userId if it doesn't exist
+                userId = 'user_' + Math.floor(Math.random() * 1000000);
+                localStorage.setItem('userId', userId);
+            }
+            return userId;
+        }
+
+        // Save workout data to localStorage for the specific user
+        function saveWorkoutData(workoutName, steps, heartRate, calories, distance) {
+            const userId = getUserId(); // Get user ID
+
+            let progressData = JSON.parse(localStorage.getItem(userId)) || [];
+
+            // Create a new workout object
+            const newWorkout = {
+                workoutName: workoutName,
+                steps: parseInt(steps),
+                heartRate: parseInt(heartRate),
+                calories: parseFloat(calories),
+                distance: parseFloat(distance),
+                date: new Date().toLocaleString()
+            };
+
+            // Add new workout to existing data
+            progressData.push(newWorkout);
+
+            // Save the updated progress data back to localStorage
+            localStorage.setItem(userId, JSON.stringify(progressData));
+        }
+
+        // Retrieve and display all progress data for the specific user
+        function loadProgressData() {
+            const userId = getUserId(); // Get user ID
+            const progressData = JSON.parse(localStorage.getItem(userId)) || [];
+
+            const progressContainer = document.getElementById('progressReports');
+            progressContainer.innerHTML = ''; // Clear any existing progress reports
+
+            progressData.forEach((workout) => {
+                const workoutDiv = document.createElement('div');
+                workoutDiv.classList.add('workout-report');
+                workoutDiv.innerHTML = `
+                    <h3>${workout.workoutName}</h3>
+                    <p>Date: ${workout.date}</p>
+                    <p>Steps: ${workout.steps}</p>
+                    <p>Heart Rate: ${workout.heartRate} bpm</p>
+                    <p>Calories: ${workout.calories} kcal</p>
+                    <p>Distance: ${workout.distance} km</p>
+                `;
+                progressContainer.appendChild(workoutDiv);
+            });
+
+            // Calculate and display steps in the last 7 and 30 days
+            calculateSteps(progressData);
+        }
+
+        // Function to calculate and display total steps for the last 7 and 30 days
+        function calculateSteps(progressData) {
+            const today = new Date();
+            let steps7Days = 0;
+            let steps30Days = 0;
+
+            progressData.forEach((workout) => {
+                const workoutDate = new Date(workout.date);
+                const diffDays = Math.floor((today - workoutDate) / (1000 * 60 * 60 * 24));
+
+                if (diffDays <= 7) {
+                    steps7Days += workout.steps;
+                }
+
+                if (diffDays <= 30) {
+                    steps30Days += workout.steps;
+                }
+            });
+
+            // Display the results
+            document.getElementById('7daystep').textContent = `Steps in the last 7 days: ${steps7Days}`;
+            document.getElementById('30daystep').textContent = `Steps in the last 30 days: ${steps30Days}`;
+        }
+
+        // Call loadProgressData when the page is loaded to display existing progress
+        window.onload = loadProgressData;
+
+        // Example usage: Save workout data when a form is submitted (use your form's actual event handler)
+        document.getElementById('saveWorkoutButton').addEventListener('click', function() {
+            const workoutName = document.getElementById('workoutName').value;
+            const steps = document.getElementById('steps').value;
+            const heartRate = document.getElementById('heartRate').value;
+            const calories = document.getElementById('calories').value;
+            const distance = document.getElementById('distance').value;
+
+            // Save data to localStorage
+            saveWorkoutData(workoutName, steps, heartRate, calories, distance);
+        });
+    </script>
     <nav>
         <a href="/">Home</a>
         <a href="/graphs">Graphs</a>
@@ -17,7 +117,8 @@
         <a href="/weather">Weather</a>
     </nav>
     <h1>Progress Report</h1>
-    <p style="text-align: center;">Steps in the last 7 days: {{ weekly_steps }}</p>
-    <p style="text-align: center;">Steps in the last 30 days: {{ monthly_steps }}</p>
+    <p style="text-align: center;" id="7daystep">Steps in the last 7 days: </p>
+    <p style="text-align: center;" id="30daystep">Steps in the last 30 days: </p>
+    <div id="progressReports"></div>
 </body>
 </html>

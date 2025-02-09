@@ -18,21 +18,89 @@
     </nav>
 
     <h1>Workout Tracker</h1>
-    <form action="/" method="POST">
-        <input type="text" name="workout_name" placeholder="Workout Name" required>
-        <input type="number" name="steps" placeholder="Steps Taken" required>
-        <input type="number" name="heart_rate" placeholder="Heart Rate (optional)">
-        <input type="number" name="calories_burned" placeholder="Calories Burned (optional)">
-        <input type="number" name="distance_walked" placeholder="Distance Walked (km, optional)">
+    <form id="workoutForm">
+        <input type="text" id="workoutName" placeholder="Workout Name" required>
+        <input type="number" id="steps" placeholder="Steps Taken" required>
+        <input type="number" id="heartRate" placeholder="Heart Rate (optional)">
+        <input type="number" id="caloriesBurned" placeholder="Calories Burned (optional)">
+        <input type="number" id="distanceWalked" placeholder="Distance Walked (km, optional)">
         <button type="submit">Add Workout</button>
     </form>
 
     <h2 style="text-align: center;">Workout History</h2>
-    <ul style="text-align: center; list-style-type: none;">
-        {% for workout in workouts %}
-            <li>{{ workout.date }} - {{ workout.workout_name }}: {{ workout.steps }} steps</li>
-        {% endfor %}
-    </ul>
-    <p style="text-align: center;">made by yajath b and powered by python, flask, and other cool stuff</p>
+    <ul id="workoutHistory" style="text-align: center; list-style-type: none;"></ul>
+
+    <p style="text-align: center;">made by yajath b and powered by JavaScript, localStorage, and other cool stuff</p>
+
+    <script>
+        // Generate or get user ID from localStorage
+        function getUserId() {
+            let userId = localStorage.getItem('userId');
+            if (!userId) {
+                // Generate a random userId if it doesn't exist
+                userId = 'user_' + Math.floor(Math.random() * 1000000);
+                localStorage.setItem('userId', userId);
+            }
+            return userId;
+        }
+
+        // Save workout data to localStorage for the specific user
+        function saveWorkoutData(workoutName, steps, heartRate, calories, distance) {
+            const userId = getUserId(); // Get user ID
+
+            let progressData = JSON.parse(localStorage.getItem(userId)) || [];
+
+            // Create a new workout object
+            const newWorkout = {
+                workoutName: workoutName,
+                steps: steps,
+                heartRate: heartRate,
+                calories: calories,
+                distance: distance,
+                date: new Date().toLocaleString()
+            };
+
+            // Add new workout to existing data
+            progressData.push(newWorkout);
+
+            // Save the updated progress data back to localStorage
+            localStorage.setItem(userId, JSON.stringify(progressData));
+        }
+
+        // Load and display workout history from localStorage
+        function loadWorkoutHistory() {
+            const userId = getUserId(); // Get user ID
+            const progressData = JSON.parse(localStorage.getItem(userId)) || [];
+
+            const workoutHistoryContainer = document.getElementById('workoutHistory');
+            workoutHistoryContainer.innerHTML = ''; // Clear previous history
+
+            progressData.forEach((workout) => {
+                const workoutItem = document.createElement('li');
+                workoutItem.textContent = `${workout.date} - ${workout.workoutName}: ${workout.steps} steps`;
+                workoutHistoryContainer.appendChild(workoutItem);
+            });
+        }
+
+        // Form submit event listener
+        document.getElementById('workoutForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const workoutName = document.getElementById('workoutName').value;
+            const steps = document.getElementById('steps').value;
+            const heartRate = document.getElementById('heartRate').value;
+            const calories = document.getElementById('caloriesBurned').value;
+            const distance = document.getElementById('distanceWalked').value;
+
+            // Save the workout data to localStorage
+            saveWorkoutData(workoutName, steps, heartRate, calories, distance);
+
+            // Reload the workout history
+            loadWorkoutHistory();
+        });
+
+        // Load workout history when the page loads
+        window.onload = loadWorkoutHistory;
+    </script>
 </body>
 </html>

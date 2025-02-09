@@ -22,5 +22,21 @@
         "heart_rate": "199",
         "calories_burned": "23",
         "distance_walked": "4"
+    },
+    {
+        "date": "2025-02-08",
+        "workout_name": "Leg Day",
+        "steps": "3000",
+        "heart_rate": "",
+        "calories_burned": "",
+        "distance_walked": ""
+    },
+    {
+        "date": "2025-02-08",
+        "workout_name": "Running",
+        "steps": "5000",
+        "heart_rate": "",
+        "calories_burned": "200",
+        "distance_walked": ""
     }
 ]
