@@ -42,9 +42,9 @@
         const goalDistance = document.getElementById('goalDistance');
         const goalSteps = document.getElementById('goalSteps');
         const goalCalories = document.getElementById('goalCalories');
-        goalDistance.placeholder = localStorage.getItem('distanceGoal') || '0';
-        goalSteps.placeholder = localStorage.getItem('stepsGoal') || '0';
-        goalCalories.placeholder = localStorage.getItem('caloriesGoal') || '0';
+        goalDistance.placeholder = `Default: 5. Current: ${localStorage.getItem('distanceGoal') || '0'}`;
+        goalSteps.placeholder = `Default: 10000. Current: ${localStorage.getItem('stepsGoal') || '0'}`;
+        goalCalories.placeholder = `Default: 500. Current: ${localStorage.getItem('caloriesGoal') || '0'}`;
         function saveGoal() {
             goalDistanceval = parseFloat(goalDistance.value),
             goalStepsval = parseInt(goalSteps.value),
