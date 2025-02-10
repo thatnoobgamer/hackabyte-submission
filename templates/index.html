@@ -57,6 +57,9 @@
             function distDataChecker(e) {
                 steps.value = e.target.value * 1312;
                 heartRate.value = (e.target.value * 10) + 120;
+                if (heartRate.value > 200) {
+                    heartRate.value = 200;
+                }
                 calories.value = e.target.value * 62;
             }
         </script>
