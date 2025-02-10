@@ -154,6 +154,7 @@
             const calories = document.getElementById('calories').value;
             const distance = document.getElementById('distance').value;
             saveWorkoutData(workoutName, steps, heartRate, calories, distance);
+            document.getElementById('workoutForm').reset();
         });
 
         window.onload = function() {
