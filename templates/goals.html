@@ -34,12 +34,17 @@
 
             <button type="button" id="saveGoalButton" onclick="saveGoal()">Save Goal</button>
         </form>
+        <br><br><br><br><br><br>
+        <button type="button" id="resetGoalButton" onclick="resetGoal()">Reset Goals</button>
     </div>
 
     <script>
         const goalDistance = document.getElementById('goalDistance');
         const goalSteps = document.getElementById('goalSteps');
         const goalCalories = document.getElementById('goalCalories');
+        goalDistance.placeholder = localStorage.getItem('distanceGoal') || '0';
+        goalSteps.placeholder = localStorage.getItem('stepsGoal') || '0';
+        goalCalories.placeholder = localStorage.getItem('caloriesGoal') || '0';
         function saveGoal() {
             goalDistanceval = parseFloat(goalDistance.value),
             goalStepsval = parseInt(goalSteps.value),
@@ -48,6 +53,13 @@
             localStorage.setItem('distanceGoal', goalDistanceval)
             localStorage.setItem('caloriesGoal', goalCaloriesval)
             alert('Goals saved successfully!');
+        }
+
+        function resetGoal() {
+            localStorage.removeItem('stepsGoal')
+            localStorage.removeItem('distanceGoal')
+            localStorage.removeItem('caloriesGoal')
+            alert('Goals reset successfully!');
         }
     </script>
 </body>
